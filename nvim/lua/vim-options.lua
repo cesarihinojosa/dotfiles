@@ -1,0 +1,13 @@
+vim.g.mapleader = " "
+vim.opt.clipboard = "unnamedplus"
+vim.keymap.set('i', 'jk', '<Esc>', { desc = 'Exit insert mode' })
+vim.opt.autoindent = true   -- Copy indent from current line when starting new line
+vim.opt.smartindent = true  -- Smart autoindenting for C-like languages
+vim.opt.expandtab = true    -- Convert tabs to spaces
+vim.opt.shiftwidth = 4      -- Number of spaces for indentation
+vim.opt.tabstop = 4         -- Number of spaces a tab counts for
+vim.opt.softtabstop = 4     -- Number of spaces for <Tab> in insert mode
+vim.opt.number = true         -- Shows absolute line number on current line
+vim.opt.relativenumber = true -- Shows relative numbers on other lines
+vim.opt.undofile = true
+vim.opt.undodir = vim.fn.stdpath('data') .. '/undo'
