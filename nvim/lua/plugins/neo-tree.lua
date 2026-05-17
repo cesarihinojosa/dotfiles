@@ -9,6 +9,14 @@ return {
     lazy = false, -- neo-tree will lazily load itself
     config = function()
         require("neo-tree").setup({
+            filesystem = {
+                use_libuv_file_watcher = true,
+            },
+            git_status = {
+                window = {
+                    position = "float",
+                },
+            },
             event_handlers = {
                 {
                     event = "file_opened",
