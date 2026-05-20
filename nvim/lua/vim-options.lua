@@ -38,6 +38,13 @@ vim.keymap.set("n", "<leader>t", function()
 end, { desc = "Toggle terminal" })
 
 vim.keymap.set("t", "jk", "<C-\\><C-n>", { desc = "Exit terminal mode" })
+
+vim.keymap.set("n", "<C-d>", "<C-d>zz")
+vim.keymap.set("n", "<C-u>", "<C-u>zz")
+vim.keymap.set("n", "}", "}zz")
+vim.keymap.set("n", "{", "{zz")
+vim.keymap.set("n", "n", "nzz")
+vim.keymap.set("n", "N", "Nzz")
 -- Clear search highlighting when cursor moves
 vim.on_key(function(char)
 	if vim.fn.mode() == "n" then
