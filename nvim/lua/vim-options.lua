@@ -45,6 +45,17 @@ vim.keymap.set("n", "}", "}zz")
 vim.keymap.set("n", "{", "{zz")
 vim.keymap.set("n", "n", "nzz")
 vim.keymap.set("n", "N", "Nzz")
+vim.keymap.set("n", "<leader>mc", ":!make clean<CR>", { desc = "make clean" })
+vim.keymap.set("n", "<leader>mr", ":!make run<CR>", { desc = "make run" })
+
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = { "cpp", "c", "h" },
+	callback = function()
+		vim.opt_local.shiftwidth = 2
+		vim.opt_local.tabstop = 2
+		vim.opt_local.softtabstop = 2
+	end,
+})
 -- Clear search highlighting when cursor moves
 vim.on_key(function(char)
 	if vim.fn.mode() == "n" then
