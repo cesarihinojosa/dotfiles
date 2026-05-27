@@ -26,6 +26,8 @@ RUN apt-get update && apt-get install -y \
     python3-venv \
     ca-certificates \
     gnupg \
+    neovim \
+    clangd \
     && rm -rf /var/lib/apt/lists/*
 
 # fd is installed as fdfind on Ubuntu — symlink to fd
@@ -39,11 +41,6 @@ RUN mkdir -p /etc/apt/keyrings \
        > /etc/apt/sources.list.d/nodesource.list \
     && apt-get update && apt-get install -y nodejs \
     && rm -rf /var/lib/apt/lists/*
-
-# Install Neovim from GitHub releases
-RUN curl -fsSL "https://github.com/neovim/neovim/releases/download/${NVIM_VERSION}/nvim-linux-x86_64.tar.gz" \
-    | tar xz -C /opt \
-    && ln -sf /opt/nvim-linux-x86_64/bin/nvim /usr/local/bin/nvim
 
 # Copy nvim config
 COPY nvim/ $XDG_CONFIG_HOME/nvim/
@@ -61,7 +58,7 @@ RUN nvim --headless \
 
 # Install Mason LSP servers and tools
 RUN nvim --headless \
-    -c "MasonInstall clangd lua-language-server pyright bash-language-server stylua clang-format" \
+    -c "MasonInstall lua-language-server pyright bash-language-server stylua clang-format" \
     -c "sleep 60" \
     -c "qa"
 
