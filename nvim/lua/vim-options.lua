@@ -38,7 +38,6 @@ vim.keymap.set("n", "<leader>t", function()
 end, { desc = "Toggle terminal" })
 
 vim.keymap.set("t", "jk", "<C-\\><C-n>", { desc = "Exit terminal mode" })
-
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
 vim.keymap.set("n", "<C-u>", "<C-u>zz")
 vim.keymap.set("n", "}", "}zz")
@@ -69,3 +68,10 @@ vim.on_key(function(char)
 		end
 	end
 end, vim.api.nvim_create_namespace("auto_hlsearch"))
+
+-- Auto updates in nvim on changes
+vim.o.autoread = true
+vim.o.updatetime = 300
+vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold", "CursorHoldI" }, {
+	command = "checktime",
+})
