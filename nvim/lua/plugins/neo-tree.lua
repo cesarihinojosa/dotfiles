@@ -9,8 +9,28 @@ return {
     lazy = false, -- neo-tree will lazily load itself
     config = function()
         require("neo-tree").setup({
+            default_component_configs = {
+                modified = {
+                    symbol = " ●",
+                    highlight = "NeoTreeModified",
+                },
+            },
+            window = {
+                mappings = {
+                    ["Y"] = function(state)
+                        local node = state.tree:get_node()
+                        local relative = vim.fn.fnamemodify(node:get_id(), ":.")
+                        vim.fn.setreg("+", relative)
+                        vim.notify("Copied: " .. relative)
+                    end,
+                },
+            },
             filesystem = {
                 use_libuv_file_watcher = true,
+            },
+            buffers = {
+                follow_current_file = { enabled = true },
+                show_unloaded = true,
             },
             git_status = {
                 window = {
@@ -26,6 +46,6 @@ return {
                 },
             },
         })
-        vim.keymap.set('n', '<leader>fs', ':Neotree<CR>')
+        vim.keymap.set('n', '<leader>fs', ':Neotree<CR>', { desc = "File explorer (Neo-tree)" })
     end
 }

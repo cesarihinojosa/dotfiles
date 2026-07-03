@@ -9,7 +9,7 @@ return {
 				null_ls.builtins.formatting.stylua,
 			},
 		})
-		vim.keymap.set("n", "<leader>gf", vim.lsp.buf.format, {})
+		vim.keymap.set("n", "<leader>gf", vim.lsp.buf.format, { desc = "Format buffer" })
 		-- Format on save
 		vim.api.nvim_create_autocmd("BufWritePre", {
 			pattern = "*",

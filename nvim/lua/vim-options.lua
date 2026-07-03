@@ -38,12 +38,12 @@ vim.keymap.set("n", "<leader>t", function()
 end, { desc = "Toggle terminal" })
 
 vim.keymap.set("t", "jk", "<C-\\><C-n>", { desc = "Exit terminal mode" })
-vim.keymap.set("n", "<C-d>", "<C-d>zz")
-vim.keymap.set("n", "<C-u>", "<C-u>zz")
-vim.keymap.set("n", "}", "}zz")
-vim.keymap.set("n", "{", "{zz")
-vim.keymap.set("n", "n", "nzz")
-vim.keymap.set("n", "N", "Nzz")
+vim.keymap.set("n", "<C-d>", "<C-d>zz", { desc = "Scroll down (centered)" })
+vim.keymap.set("n", "<C-u>", "<C-u>zz", { desc = "Scroll up (centered)" })
+vim.keymap.set("n", "}", "}zz", { desc = "Next paragraph (centered)" })
+vim.keymap.set("n", "{", "{zz", { desc = "Prev paragraph (centered)" })
+vim.keymap.set("n", "n", "nzz", { desc = "Next search result (centered)" })
+vim.keymap.set("n", "N", "Nzz", { desc = "Prev search result (centered)" })
 vim.keymap.set("n", "<leader>mc", ":!make clean<CR>", { desc = "make clean" })
 vim.keymap.set("n", "<leader>mr", ":!make run<CR>", { desc = "make run" })
 
@@ -53,6 +53,15 @@ vim.api.nvim_create_autocmd("FileType", {
 		vim.opt_local.shiftwidth = 2
 		vim.opt_local.tabstop = 2
 		vim.opt_local.softtabstop = 2
+		vim.keymap.set("n", "M", function()
+			local word = vim.fn.expand("<cword>")
+			if word == "" then
+				return
+			end
+			vim.cmd("enew")
+			vim.cmd("terminal cppman " .. vim.fn.shellescape(word))
+			vim.cmd("startinsert")
+		end, { buffer = true, desc = "Open cppman for word under cursor" })
 	end,
 })
 -- Clear search highlighting when cursor moves
@@ -69,9 +78,26 @@ vim.on_key(function(char)
 	end
 end, vim.api.nvim_create_namespace("auto_hlsearch"))
 
+vim.api.nvim_create_autocmd("BufReadCmd", {
+	pattern = { "*.png", "*.jpg", "*.jpeg", "*.gif", "*.bmp", "*.webp" },
+	callback = function(ev)
+		vim.fn.jobstart({ "open", ev.file })
+		vim.cmd("bdelete!")
+	end,
+})
+
 -- Auto updates in nvim on changes
 vim.o.autoread = true
 vim.o.updatetime = 300
 vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold", "CursorHoldI" }, {
 	command = "checktime",
+})
+vim.keymap.set("n", "<leader>b", "<C-^>", { desc = "Go to last buffer" })
+
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "qf",
+	callback = function()
+		vim.keymap.set("n", "<Tab>", ":cnext<CR>", { buffer = true, desc = "Next quickfix item" })
+		vim.keymap.set("n", "<S-Tab>", ":cprev<CR>", { buffer = true, desc = "Prev quickfix item" })
+	end,
 })

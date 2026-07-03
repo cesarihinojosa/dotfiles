@@ -2,18 +2,15 @@ return {
 	"tpope/vim-fugitive",
 	config = function()
 		-- Git status
-		vim.keymap.set("n", "<leader>gs", vim.cmd.Git)
-		-- Stage all files
+		vim.keymap.set("n", "<leader>gs", vim.cmd.Git, { desc = "Git status" })
 		vim.keymap.set("n", "<leader>ga", function()
 			vim.cmd("Git add -A")
 			print("Staged all files")
-		end)
-		-- Stage current file
+		end, { desc = "Git stage all files" })
 		vim.keymap.set("n", "<leader>gA", function()
 			vim.cmd("Git add %")
 			print("Staged " .. vim.fn.expand("%:t"))
-		end)
-		-- Commit with prompt
+		end, { desc = "Git stage current file" })
 		vim.keymap.set("n", "<leader>gc", function()
 			vim.ui.input({ prompt = "Commit message: " }, function(msg)
 				if not msg or msg == "" then
@@ -21,16 +18,13 @@ return {
 				end
 				vim.cmd('Git commit -m "' .. msg:gsub('"', '\\"') .. '"')
 			end)
-		end)
-		-- Push
+		end, { desc = "Git commit" })
 		vim.keymap.set("n", "<leader>gP", function()
 			vim.cmd("Git push")
-		end)
-		-- Pull
+		end, { desc = "Git push" })
 		vim.keymap.set("n", "<leader>gl", function()
 			vim.cmd("Git pull")
-		end)
-		-- Stage all + commit + push
+		end, { desc = "Git pull" })
 		vim.keymap.set("n", "<leader>gp", function()
 			vim.ui.input({ prompt = "Commit message: " }, function(msg)
 				if not msg or msg == "" then
@@ -40,18 +34,15 @@ return {
 				vim.cmd('Git commit -m "' .. msg:gsub('"', '\\"') .. '"')
 				vim.cmd("Git push")
 			end)
-		end)
-		-- Blame
+		end, { desc = "Git stage all + commit + push" })
 		vim.keymap.set("n", "<leader>gb", function()
 			vim.cmd("Git blame")
-		end)
-		-- Diff
+		end, { desc = "Git blame" })
 		vim.keymap.set("n", "<leader>gd", function()
 			vim.cmd("Git diff")
-		end)
-		-- Log
+		end, { desc = "Git diff" })
 		vim.keymap.set("n", "<leader>go", function()
 			vim.cmd("Git log --oneline")
-		end)
+		end, { desc = "Git log (oneline)" })
 	end,
 }

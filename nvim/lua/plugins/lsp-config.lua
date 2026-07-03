@@ -48,28 +48,36 @@ return {
 					local opts = { buffer = ev.buf }
 
 					-- Navigation
-					vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
-					vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
-					vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
-					vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, opts)
-					vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
-					vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
-					vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts)
-					vim.keymap.set("i", "<C-k>", vim.lsp.buf.signature_help, opts)
+					local function lsp_opts(desc)
+						return vim.tbl_extend("force", opts, { desc = desc })
+					end
 
-					-- Code actions
-					vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
-					vim.keymap.set("v", "<leader>ca", vim.lsp.buf.code_action, opts)
-					vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
+					vim.keymap.set("n", "gd", vim.lsp.buf.definition, lsp_opts("Go to definition"))
+					vim.keymap.set("n", "gD", vim.lsp.buf.declaration, lsp_opts("Go to declaration"))
+					vim.keymap.set("n", "gi", vim.lsp.buf.implementation, lsp_opts("Go to implementation"))
+					vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, lsp_opts("Go to type definition"))
+					vim.keymap.set("n", "gr", vim.lsp.buf.references, lsp_opts("Find references"))
+					vim.keymap.set("n", "K", vim.lsp.buf.hover, lsp_opts("Hover docs"))
+					vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, lsp_opts("Signature help"))
+					vim.keymap.set("i", "<C-k>", vim.lsp.buf.signature_help, lsp_opts("Signature help"))
+
+					vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, lsp_opts("Code action"))
+					vim.keymap.set("v", "<leader>ca", vim.lsp.buf.code_action, lsp_opts("Code action (visual)"))
+					vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, lsp_opts("Rename symbol"))
 					vim.keymap.set("n", "<leader>f", function()
 						vim.lsp.buf.format({ async = true })
-					end, opts)
+					end, lsp_opts("Format buffer"))
 
-					-- Diagnostics
-					vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, opts)
-					vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
-					vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
-					vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, opts)
+					vim.keymap.set("n", "<leader>e", function()
+						local diag = vim.diagnostic.get(0, { lnum = vim.api.nvim_win_get_cursor(0)[1] - 1 })
+						if #diag > 0 then
+							vim.fn.setreg("+", diag[1].message)
+						end
+						vim.diagnostic.open_float()
+					end, lsp_opts("Show diagnostic + copy"))
+					vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, lsp_opts("Previous diagnostic"))
+					vim.keymap.set("n", "]d", vim.diagnostic.goto_next, lsp_opts("Next diagnostic"))
+					vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, lsp_opts("Diagnostics to loclist"))
 
 					-- Force diagnostics to show immediately after LSP attaches
 					vim.defer_fn(function()
