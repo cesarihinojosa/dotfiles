@@ -25,6 +25,7 @@ return {
                 builtin.live_grep({ additional_args = { "--hidden", "--glob", "!.git/" } })
             end, { desc = 'Telescope live grep (hidden files)' })
             vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = 'Telescope buffers' })
+            vim.keymap.set('n', '<leader>fr', builtin.resume, { desc = 'Telescope resume' })
         end
     },
     {

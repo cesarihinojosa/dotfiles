@@ -1,6 +1,6 @@
 -- Scales the saturation of every color gruvbox-material defines.
 -- 1.0 = stock, lower = more muted. Neutrals are unaffected (they have no saturation).
-local SATURATION = 0.8
+local SATURATION = 0.9
 
 local function scale_saturation(hex, factor)
 	local rr, gg, bb = hex:match("^#(%x%x)(%x%x)(%x%x)$")

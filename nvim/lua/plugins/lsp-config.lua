@@ -21,7 +21,7 @@ return {
 		"mason-org/mason-lspconfig.nvim",
 		opts = {
 			automatic_installation = true,
-			ensure_installed = { "gopls", "gitlab_ci_ls", "ruby_lsp" },
+			ensure_installed = { "gopls", "gitlab_ci_ls", "ruby_lsp", "pyright" },
 		},
 		dependencies = {
 			{ "mason-org/mason.nvim", opts = {} },
